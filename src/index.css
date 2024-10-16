@@ -1,0 +1,61 @@
+/* Generales */
+body {
+  font-family: "Inter", sans-serif;
+  color: black;
+}
+
+a {
+  color: black;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #ea638c;
+}
+
+.btn-primary {
+  background-color: #f7bdce !important;
+  color: black;
+  border: 0;
+  padding: 1rem 1.5rem;
+  border-radius: 1.25rem;
+}
+
+.btn-primary:hover {
+  background-color: #ea638c !important;
+  color: white;
+  border: 0;
+}
+
+/* Header */
+
+.header__top {
+  background-color: #03989e;
+  height: 40px;
+}
+
+.header__center {
+  background: url("/src/assets/img/bg.png");
+  padding: 2rem 0;
+  text-align: center;
+  height: 180px;
+}
+
+.header__bottom {
+  background-color: #f7bdce;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  font-family: "Lobster Two", sans-serif;
+  font-size: 20px;
+}
+
+
+/* Main */ 
+
+main {
+  width: 1280px;
+  margin: 0 auto;
+}
