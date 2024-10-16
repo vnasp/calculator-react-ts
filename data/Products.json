@@ -1,0 +1,88 @@
+{
+  "products": [
+    {
+      "name": "Harina",
+      "quantity": 1000,
+      "unit": "g",
+      "price": 1290,
+      "currency": "CLP"
+    },
+    {
+      "name": "Mantequilla sin sal",
+      "quantity": 250,
+      "unit": "g",
+      "price": 1590,
+      "currency": "CLP"
+    },
+    {
+      "name": "Azúcar flor",
+      "quantity": 1000,
+      "unit": "g",
+      "price": 900,
+      "currency": "CLP"
+    },
+    {
+      "name": "Huevos",
+      "quantity": 24,
+      "unit": "un",
+      "price": 150,
+      "currency": "CLP"
+    },
+    {
+      "name": "Harina sin polvos",
+      "quantity": 1000,
+      "unit": "g",
+      "price": 1290,
+      "currency": "CLP"
+    },
+    {
+      "name": "Agua",
+      "quantity": 1000,
+      "unit": "mL",
+      "price": 0,
+      "currency": "CLP"
+    },
+    {
+      "name": "Sal",
+      "quantity": 1000,
+      "unit": "g",
+      "price": 300,
+      "currency": "CLP"
+    },
+    {
+      "name": "Aceite",
+      "quantity": 1000,
+      "unit": "mL",
+      "price": 2000,
+      "currency": "CLP"
+    },
+    {
+      "name": "Esencia vainilla",
+      "quantity": 1000,
+      "unit": "mL",
+      "price": 2000,
+      "currency": "CLP"
+    },
+    {
+      "name": "Albúmina en polvo",
+      "quantity": 1000,
+      "unit": "g",
+      "price": 2000,
+      "currency": "CLP"
+    },
+    {
+      "name": "Colorantes",
+      "quantity": 10,
+      "unit": "mL",
+      "price": 2000,
+      "currency": "CLP"
+    },
+    {
+      "name": "Mangas desechables",
+      "quantity": 1,
+      "unit": "un",
+      "price": 500,
+      "currency": "CLP"
+    }
+  ]
+}

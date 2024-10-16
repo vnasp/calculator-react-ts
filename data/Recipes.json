@@ -1,0 +1,80 @@
+{
+  "recipes": [
+    {
+      "name": "Galletas Decoradas",
+      "portions": 30,
+      "subpreparations": [
+        {
+          "name": "Galletas de Mantequilla",
+          "ingredients": [
+            {
+              "name": "Mantequilla sin sal",
+              "quantity": 250,
+              "unit": "gramos"
+            },
+            {
+              "name": "Azúcar flor",
+              "quantity": 500,
+              "unit": "gramos"
+            },
+            {
+              "name": "Huevos",
+              "quantity": 30,
+              "unit": "unidades"
+            },
+            {
+              "name": "Harina sin polvos",
+              "quantity": 1000,
+              "unit": "gramos"
+            },
+            {
+              "name": "Esencia vainilla",
+              "quantity": 500,
+              "unit": "ml"
+            }
+          ]
+        },
+        {
+          "name": "Glasé Royal",
+          "ingredients": [
+            {
+              "name": "Azúcar flor",
+              "quantity": 500,
+              "unit": "gramos"
+            },
+            {
+              "name": "Albumina en polvo",
+              "quantity": 500,
+              "unit": "gramos"
+            },
+            {
+              "name": "Cremor tártaro",
+              "quantity": 50,
+              "unit": "gramos"
+            },
+            {
+              "name": "Esencia vainilla",
+              "quantity": 500,
+              "unit": "ml"
+            }
+          ]
+        },
+        {
+          "name": "Otros",
+          "ingredients": [
+            {
+              "name": "Colorantes",
+              "quantity": 10,
+              "unit": "ml"
+            },
+            {
+              "name": "Mangas desechables",
+              "quantity": 1,
+              "unit": "unidad"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
