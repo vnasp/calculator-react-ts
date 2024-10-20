@@ -10,27 +10,27 @@
             {
               "name": "Mantequilla sin sal",
               "quantity": 250,
-              "unit": "gramos"
+              "unit": "g"
             },
             {
               "name": "Azúcar flor",
               "quantity": 500,
-              "unit": "gramos"
+              "unit": "g"
             },
             {
               "name": "Huevos",
               "quantity": 30,
-              "unit": "unidades"
+              "unit": "un"
             },
             {
               "name": "Harina sin polvos",
               "quantity": 1000,
-              "unit": "gramos"
+              "unit": "g"
             },
             {
               "name": "Esencia vainilla",
               "quantity": 500,
-              "unit": "ml"
+              "unit": "mL"
             }
           ]
         },
@@ -40,22 +40,22 @@
             {
               "name": "Azúcar flor",
               "quantity": 500,
-              "unit": "gramos"
+              "unit": "g"
             },
             {
               "name": "Albumina en polvo",
               "quantity": 500,
-              "unit": "gramos"
+              "unit": "g"
             },
             {
               "name": "Cremor tártaro",
               "quantity": 50,
-              "unit": "gramos"
+              "unit": "g"
             },
             {
               "name": "Esencia vainilla",
               "quantity": 500,
-              "unit": "ml"
+              "unit": "mL"
             }
           ]
         },
@@ -65,7 +65,7 @@
             {
               "name": "Colorantes",
               "quantity": 10,
-              "unit": "ml"
+              "unit": "mL"
             },
             {
               "name": "Mangas desechables",

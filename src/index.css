@@ -27,6 +27,15 @@ a:hover {
   border: 0;
 }
 
+.btn-outline-primary {
+  border-color: #f7bdce !important;
+}
+
+.btn-outline-primary:hover {
+  background-color: #ea638c !important;
+  color: white;
+}
+
 /* Header */
 
 .header__top {
@@ -35,7 +44,7 @@ a:hover {
 }
 
 .header__center {
-  background: url("/src/assets/img/bg.png");
+  background: url("/assets/img/bg.png");
   padding: 2rem 0;
   text-align: center;
   height: 180px;
@@ -58,4 +67,22 @@ a:hover {
 main {
   width: 1280px;
   margin: 0 auto;
+}
+
+/* Calculadora */
+.step-circle {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+  border-radius: 50%;
+  background-color: #f7bdce;
+  color: white;
+  text-align: center;
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.card{
+  background-color:#f6f6f6;
 }

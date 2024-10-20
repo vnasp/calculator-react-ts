@@ -64,7 +64,7 @@
       "currency": "CLP"
     },
     {
-      "name": "Albúmina en polvo",
+      "name": "Albumina en polvo",
       "quantity": 1000,
       "unit": "g",
       "price": 2000,
@@ -82,6 +82,13 @@
       "quantity": 1,
       "unit": "un",
       "price": 500,
+      "currency": "CLP"
+    },
+    {
+      "name": "Cremor tártaro",
+      "quantity": 50,
+      "unit": "g",
+      "price": 5000,
       "currency": "CLP"
     }
   ]

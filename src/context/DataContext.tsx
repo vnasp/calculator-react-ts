@@ -1,38 +1,18 @@
 import { createContext, useState, useEffect, ReactNode } from 'react';
+import { DataContextType, Product, Recipe } from './../types/interfaces';
 
-// Definir las interfaces para los datos
-// Definir las interfaces para los datos
-interface Ingredient {
-  name: string;
-  quantity: number;
-  unit: string;
-}
+// Valores por defecto
+const defaultDataContext: DataContextType = {
+  recipes: [],
+  products: [],
+  formatPrice: (value: number) => new Intl.NumberFormat('es-CL', {
+    style: 'currency',
+    currency: 'CLP',
+  }).format(value),
+};
 
-interface SubPreparation {
-  name: string;
-  ingredients: Ingredient[];
-}
+export const DataContext = createContext<DataContextType>(defaultDataContext);
 
-interface Recipe {
-  name: string;
-  portions: number;
-  subpreparations: SubPreparation[];
-}
-
-interface Product {
-  name: string;
-  quantity: number;
-  unit: string;
-  price: number;
-  currency: string;
-}
-
-interface DataContextType {
-  recipes: Recipe[];
-  products: Product[];
-}
-
-export const DataContext = createContext<DataContextType | null>(null);
 
 interface DataContextProviderProps {
   children: ReactNode;
@@ -47,12 +27,12 @@ export const DataContextProvider: React.FC<DataContextProviderProps> = ({ childr
     const fetchData = async () => {
       try {
         // Consumir el JSON de recetas
-        const recipesResponse = await fetch('/data/Recipes.json');
+        const recipesResponse = await fetch('./data/Recipes.json');
         const recipesData = await recipesResponse.json();
         setRecipes(recipesData.recipes);
 
         // Consumir el JSON de productos
-        const productsResponse = await fetch('/data/Products.json');
+        const productsResponse = await fetch('./data/Products.json');
         const productsData = await productsResponse.json();
         setProducts(productsData.products);
       } catch (error) {
@@ -63,8 +43,16 @@ export const DataContextProvider: React.FC<DataContextProviderProps> = ({ childr
     fetchData();
   }, []);
 
+  // Formateador para CLP
+  const formatPrice = (value: number) => {
+    return new Intl.NumberFormat('es-CL', {
+      style: 'currency',
+      currency: 'CLP',
+    }).format(value);
+  };
+
   return (
-    <DataContext.Provider value={{ recipes, products }}>
+    <DataContext.Provider value={{ recipes, products, formatPrice }}>
       {children}
     </DataContext.Provider>
   );

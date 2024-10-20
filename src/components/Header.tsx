@@ -1,7 +1,6 @@
 import { NavLink } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalculator } from '@fortawesome/free-solid-svg-icons';
-import '/src/assets/img/bg.png';
 
 const Header = () => {
 
@@ -10,7 +9,7 @@ const Header = () => {
       <div className="header__top"></div>
 
       <div className="header__center">
-        <img src="/src/assets/img/logo.png" alt="La Boquilla" width={350} />
+        <img src="./assets/img/logo.png" alt="La Boquilla" width={350} />
       </div>
 
       <div className="header__bottom">
