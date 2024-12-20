@@ -13,6 +13,10 @@ a:hover {
   color: #ea638c;
 }
 
+select {
+  cursor: pointer;
+}
+
 .btn-primary {
   background-color: #f7bdce !important;
   color: black;

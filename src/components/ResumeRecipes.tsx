@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { DataContext } from "../context/DataContext";
-import { ResumeRecipeProps } from "../types/interfaces";
+import { ResumeRecipeProps } from "../interfaces/interfaces";
 
 
 const ResumeRecipe: React.FC<ResumeRecipeProps> = ({ recipeName, portions, totalCost, costPerPortion }) => {

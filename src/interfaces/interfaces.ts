@@ -31,11 +31,12 @@ export interface DataContextType {
 
 export interface TableCalculatorProps {
   subpreparations: SubPreparation[];
-  ingredientPrices: { [key: string]: { size: number; price: number } };
+  ingredientPrices: { [key: string]: { size: number; price: number; unit: string } };
   editable: { [key: string]: boolean };
   toggleEditable: (ingredientName: string) => void;
-  handleInputChange: (ingredientName: string, field: 'size' | 'price', value: number) => void; // Cambiar aquí
+  handleInputChange: (ingredientName: string, field: 'size' | 'price' | 'unit', value: number | string) => void; // Cambiar aquí
   calculateCost: (ingredient: Ingredient) => { cost: number; leftover: number } | null;
+  calculateAdditionalRowCost: (row: { quantity: number; size: number; price: number; unit: string }) => { cost: number } | null;
   getIngredientDefaults: (ingredientName: string) => { size: number; price: number };
   portions: number;
 }

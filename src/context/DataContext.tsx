@@ -1,5 +1,5 @@
 import { createContext, useState, useEffect, ReactNode } from 'react';
-import { DataContextType, Product, Recipe } from './../types/interfaces';
+import { DataContextType, Product, Recipe } from './../interfaces/interfaces';
 
 // Valores por defecto
 const defaultDataContext: DataContextType = {

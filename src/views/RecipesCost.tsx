@@ -1,13 +1,13 @@
 import { useContext, useState } from 'react';
 import { DataContext } from './../context/DataContext';
-import { Ingredient } from '../types/interfaces';
+import { Ingredient } from '../interfaces/interfaces';
 import TableCalculator from './../components/TableCalculator';
 import ResumeRecipe from '../components/ResumeRecipes';
 
 const RecipesCost = () => {
   const dataContext = useContext(DataContext);
   const [selectedRecipe, setSelectedRecipe] = useState('');
-  const [ingredientPrices, setIngredientPrices] = useState<{ [key: string]: { size: number; price: number } }>({});
+  const [ingredientPrices, setIngredientPrices] = useState<{ [key: string]: { size: number; price: number, unit: string } }>({});
   const [editable, setEditable] = useState<{ [key: string]: boolean }>({});
   const { recipes, products } = dataContext;
 
@@ -19,14 +19,31 @@ const RecipesCost = () => {
   };
 
   // Manejar el cambio de los inputs de tamaño y precio para un ingrediente específico
-  const handleInputChange = (ingredientName: string, field: 'size' | 'price', value: number) => {
-    setIngredientPrices((prev) => ({
-      ...prev,
-      [ingredientName]: {
-        ...prev[ingredientName],
-        [field]: value,
-      },
-    }));
+  const handleInputChange = (ingredientName: string, field: 'size' | 'price' | 'unit', value: number | string) => {
+    setIngredientPrices((prev) => {
+      const updated = { ...prev[ingredientName], [field]: value };
+  
+      if (field === 'unit' && typeof value === 'string') {
+        const recipeUnit = prev[ingredientName]?.unit || 'g';
+        if (recipeUnit === 'g' && value === 'kg') {
+          updated.size = (updated.size || 0) / 1000;
+        } else if (recipeUnit === 'kg' && value === 'g') {
+          updated.size = (updated.size || 0) * 1000;
+        } else if (recipeUnit === 'mL' && value === 'L') {
+          updated.size = (updated.size || 0) / 1000; 
+        } else if (recipeUnit === 'L' && value === 'mL') {
+          updated.size = (updated.size || 0) * 1000; 
+        } else if (recipeUnit === 'un' && value !== 'un') {
+          alert('Solo se permite "un" como unidad');
+          return prev;
+        }
+      }
+  
+      return {
+        ...prev,
+        [ingredientName]: updated,
+      };
+    });
   };
 
 
@@ -46,15 +63,56 @@ const RecipesCost = () => {
 
     // Calcular el costo por ingrediente
     const calculateCost = (ingredient: Ingredient) => {
-      const size = ingredientPrices[ingredient.name]?.size || getIngredientDefaults(ingredient.name).size;
-      const price = ingredientPrices[ingredient.name]?.price || getIngredientDefaults(ingredient.name).price;
-      if (size && price) {
-        const cost = Math.round((ingredient.quantity / size) * price);
-        const leftover = Math.round(size - ingredient.quantity);
-        return { cost, leftover };
+      const ingredientData = ingredientPrices[ingredient.name] || getIngredientDefaults(ingredient.name);
+    
+      // Unidad y tamaño del ingrediente comprado
+      const { size, price, unit } = ingredientData;
+    
+      // Validar que haya un precio y tamaño definido
+      if (!size || !price) return null;
+    
+      // Unidad de la receta
+      const recipeUnit = ingredient.unit;
+    
+      // Convertir el tamaño comprado a la misma unidad que la receta
+      let convertedSize = size;
+    
+      if (recipeUnit === 'g' && unit === 'kg') {
+        convertedSize = size * 1000; // Convertir kg a g
+      } else if (recipeUnit === 'kg' && unit === 'g') {
+        convertedSize = size / 1000; // Convertir g a kg
+      } else if (recipeUnit === 'mL' && unit === 'L') {
+        convertedSize = size * 1000; // Convertir L a mL
+      } else if (recipeUnit === 'L' && unit === 'mL') {
+        convertedSize = size / 1000; // Convertir mL a L
+      } else if (recipeUnit === 'un' && unit !== 'un') {
+        // Si la unidad no es compatible, mostrar un error
+        console.warn(`Unidad incompatible: ${unit} no puede usarse con ${recipeUnit}`);
+        return null;
       }
-      return null;
+    
+      // Calcular el costo usando el tamaño convertido
+      const cost = Math.round((ingredient.quantity / convertedSize) * price);
+      const leftover = Math.round(convertedSize - ingredient.quantity);
+    
+      return { cost, leftover };
     };
+
+
+    // Calcular el costo para filas adicionales
+    const calculateAdditionalRowCost = (row: { quantity: number; size: number; price: number; unit: string }) => {
+      const { quantity, size, price } = row;
+    
+      if (!quantity || !size || !price) return null;
+    
+      let convertedSize = size;
+    
+      // Calcular el costo usando el tamaño convertido
+      const cost = Math.round((quantity / convertedSize) * price);
+    
+      return { cost };
+    };    
+    
 
     const selectedRecipeObj = recipes.find((recipe) => recipe.name === selectedRecipe);
 
@@ -107,6 +165,7 @@ const RecipesCost = () => {
                 toggleEditable={toggleEditable}
                 handleInputChange={handleInputChange}
                 calculateCost={calculateCost}
+                calculateAdditionalRowCost={calculateAdditionalRowCost}
                 getIngredientDefaults={getIngredientDefaults}
                 portions={selectedRecipeObj.portions}
               />

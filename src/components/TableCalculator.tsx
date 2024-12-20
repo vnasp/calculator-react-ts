@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { TableCalculatorProps, Ingredient } from './../types/interfaces';
+import { TableCalculatorProps, Ingredient } from './../interfaces/interfaces';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCirclePlus } from '@fortawesome/free-solid-svg-icons';
 
@@ -18,17 +18,18 @@ const TableCalculator: React.FC<TableCalculatorProps> = ({
   toggleEditable,
   handleInputChange,
   calculateCost,
+  calculateAdditionalRowCost,
   getIngredientDefaults,
 }) => {
 
   // Estado para gestionar las filas adicionales
   const [additionalRows, setAdditionalRows] = useState<
-    { name: string; quantity: number; size: number; price: number }[]
+    { name: string; quantity: number; size: number; price: number; unit: string }[]
   >([]);
 
   // Función para añadir una nueva fila
   const addRow = () => {
-    setAdditionalRows([...additionalRows, { name: '', quantity: 0, size: 0, price: 0 }]);
+    setAdditionalRows([...additionalRows, { name: '', quantity: 0, size: 0, price: 0, unit: 'g' }]);
   };
 
   // Función para eliminar una fila
@@ -39,17 +40,36 @@ const TableCalculator: React.FC<TableCalculatorProps> = ({
   // Función para manejar los cambios en las filas adicionales
   const handleAdditionalRowChange = (
     index: number,
-    field: keyof typeof additionalRows[0],
+    field: 'name' | 'quantity' | 'size' | 'price' | 'unit', // Ahora incluye "unit"
     value: string | number
   ) => {
-    const updatedRows = additionalRows.map((row, i) => {
-      if (i === index) {
-        return { ...row, [field]: value };
-      }
-      return row;
-    });
-    setAdditionalRows(updatedRows);
+    setAdditionalRows((prevRows) =>
+      prevRows.map((row, i) => {
+        if (i === index) {
+          const updatedRow = { ...row, [field]: value };
+
+          // Validar y convertir unidades si se cambia la unidad
+          if (field === 'unit' && typeof value === 'string') {
+            if (row.unit === 'g' && value === 'kg') {
+              updatedRow.size = (updatedRow.size || 0) / 1000; // Convertir g a kg
+            } else if (row.unit === 'kg' && value === 'g') {
+              updatedRow.size = (updatedRow.size || 0) * 1000; // Convertir kg a g
+            } else if (row.unit === 'mL' && value === 'L') {
+              updatedRow.size = (updatedRow.size || 0) / 1000; // Convertir mL a L
+            } else if (row.unit === 'L' && value === 'mL') {
+              updatedRow.size = (updatedRow.size || 0) * 1000; // Convertir L a mL
+            } else if (row.unit === 'un' && value !== 'un') {
+              alert('Solo se permite "un" como unidad');
+            }
+          }
+
+          return updatedRow;
+        }
+        return row;
+      })
+    );
   };
+
 
 
   return (
@@ -88,20 +108,43 @@ const TableCalculator: React.FC<TableCalculatorProps> = ({
                       <tr key={`${subprep.name}-${idx}`}>
                         <td className="text-center">{isNegativeLeftover && <span className="ms-2">⚠️</span>}
                         </td>
+
+                        {/* Nombre ingrediente */}
                         <td>{ingredient.name}</td>
+
+                        {/* Cantidad según receta */}
                         <td>{ingredient.quantity} {ingredient.unit}</td>
+
+                        {/* Tamaño comprado */}
                         <td>
                           {isEditable[ingredient.name] ? (
-                            <input
-                              type="number"
-                              className="form-control"
-                              value={ingredientPrices[ingredient.name]?.size || ''}
-                              onChange={(e) => handleInputChange(ingredient.name, 'size', parseFloat(e.target.value))}
-                            />
+                            <div className="d-flex">
+                              <input
+                                type="number"
+                                className="form-control d-inline"
+                                value={ingredientPrices[ingredient.name]?.size || ''}
+                                onChange={(e) => handleInputChange(ingredient.name, 'size', parseFloat(e.target.value))}
+                              />
+                              <select
+                                className="form-select d-inline w-auto ms-2"
+                                value={ingredientPrices[ingredient.name]?.unit || ingredient.unit}
+                                onChange={(e) => handleInputChange(ingredient.name, 'unit', e.target.value)}
+                              >
+                                <option value="un">un</option>
+                                <option value="g">g</option>
+                                <option value="kg">kg</option>
+                                <option value="mL">mL</option>
+                                <option value="L">L</option>
+                              </select>
+                            </div>
                           ) : (
-                            <span>{defaults.size} {ingredient.unit}</span>
+                            <span>
+                              {ingredientPrices[ingredient.name]?.size || ingredient.quantity} {ingredientPrices[ingredient.name]?.unit || ingredient.unit}
+                            </span>
                           )}
                         </td>
+
+                        {/* Precio de Compra */}
                         <td>
                           {isEditable[ingredient.name] ? (
                             <input
@@ -115,7 +158,10 @@ const TableCalculator: React.FC<TableCalculatorProps> = ({
                           )}
                         </td>
 
+                        {/* Costo */}
                         <td>{result ? formatPrice(result.cost) : 'N/A'}</td>
+
+                        {/* Acción: editar */}
                         <td className="text-center">
                           <button className="btn btn-outline-primary" onClick={() => toggleEditable(ingredient.name)}>
                             ✏️
@@ -150,13 +196,26 @@ const TableCalculator: React.FC<TableCalculatorProps> = ({
                     />
                   </td>
                   <td>
-                    <input
-                      type="number"
-                      className="form-control"
-                      value={row.size}
-                      onChange={(e) => handleAdditionalRowChange(index, 'size', parseFloat(e.target.value))}
-                      placeholder="Tamaño Comprado"
-                    />
+                    <div className="d-flex">
+                      <input
+                        type="number"
+                        className="form-control d-inline"
+                        value={row.size || ''}
+                        onChange={(e) => handleAdditionalRowChange(index, 'size', parseFloat(e.target.value))}
+                        placeholder="Tamaño Comprado"
+                      />
+                      <select
+                        className="form-select d-inline w-auto ms-2"
+                        value={row.unit || 'g'}
+                        onChange={(e) => handleAdditionalRowChange(index, 'unit', e.target.value)}
+                      >
+                        <option value="un">un</option>
+                        <option value="g">g</option>
+                        <option value="kg">kg</option>
+                        <option value="mL">mL</option>
+                        <option value="L">L</option>
+                      </select>
+                    </div>
                   </td>
                   <td>
                     <input
@@ -167,7 +226,9 @@ const TableCalculator: React.FC<TableCalculatorProps> = ({
                       placeholder="Precio Comprado"
                     />
                   </td>
-                  <td>{formatPrice(row.price)}</td>
+                  <td>
+                    {calculateAdditionalRowCost(row)?.cost ? formatPrice(calculateAdditionalRowCost(row)!.cost) : 'N/A'}
+                  </td>
                   <td className="text-center">
                     <button className="btn btn-outline-primary" onClick={() => removeRow(index)}>
                       ✖️
